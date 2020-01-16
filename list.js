@@ -10,7 +10,9 @@ var list = function() {
         for (var i = 0; i < response.length; i++) {
             console.log("Item id: " + response[i].id + " Item Name: " + response[i].item + " Quantity: " + response[i].quantity + " Price: " + response[i].price);
         }
+
     })
+    connection.end();
 }
 
 module.exports = list;
