@@ -14,4 +14,4 @@ var connection = mysql.createConnection({
     database: "inventory_db"
 });
 
-module.exports = mysql;
+module.exports = connection;
