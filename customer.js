@@ -1,8 +1,13 @@
-// var mysql = require("mysql");
-var inquirer = require("inquirer");
-var connection = require("./dbSetUp");
 var list = require("./list");
-var purchase = require("./customerPurchase");
+var Purchase = require("./customerPurchase");
+var inquirer = require("inquirer");
+var mysql = require("mysql");
+var connection = require("./dbSetUp");
+connection.connect(function(err) {
+    if (err) throw err;
+
+});
+
 
 var shopper = function() {
     inquirer.prompt([{
@@ -23,13 +28,18 @@ var shopper = function() {
                     name: "quantity"
                 }
             ]).then(function(response) {
-                console.log(response);
-                // purchase(response.userchoice, response.quantity);
+                var purchase = new Purchase(response.userchoice, response.quantity);
+                purchase.update;
+
             })
+
         }
+
         if (!response.shop) {
             console.log("Sorry your broke come back when you have money");
+            connection.end();
         }
     })
+
 }
 shopper();
