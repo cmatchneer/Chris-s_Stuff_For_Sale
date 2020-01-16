@@ -1,3 +1,4 @@
+//customer window
 var list = require("./list");
 var Purchase = require("./customerPurchase");
 var inquirer = require("inquirer");
@@ -5,10 +6,7 @@ var mysql = require("mysql");
 var connection = require("./dbSetUp");
 connection.connect(function(err) {
     if (err) throw err;
-
 });
-
-
 var shopper = function() {
     inquirer.prompt([{
         type: "confirm",

@@ -1,3 +1,4 @@
+// lists all contect in invetory table
 var mysql = require("mysql");
 var connection = require("./dbSetUp");
 

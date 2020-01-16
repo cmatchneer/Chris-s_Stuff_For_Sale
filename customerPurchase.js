@@ -1,8 +1,9 @@
+//customer purchase logic 
 var mysql = require("mysql");
 var connection = require("./dbSetUp");
 
 var Purchase = function(id, purchase) {
-        this.update = connection.query("UPDATE inventory SET ? WHERE?", [{
+        this.update = connection.query("UPDATE inventory SET ? WHERE ? OR ?", [{
             quantity: purchase
         }, {
             id: id
@@ -23,6 +24,6 @@ var Purchase = function(id, purchase) {
 
 
     }
-    // var purchase = new Purchase(1, 1);
+    // var purchase = new Purchase(" ", 1, "Chairs");
     // purchase.update;
 module.exports = Purchase;
