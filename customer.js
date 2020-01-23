@@ -40,16 +40,12 @@ var shopper = function() {
                         shopper();
                     }
                 })
-
             })
-
         }
-
         if (!response.shop) {
             console.log("Sorry your broke come back when you have money");
             connection.end();
         }
     })
-
 }
 shopper();

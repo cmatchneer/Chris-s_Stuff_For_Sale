@@ -6,20 +6,14 @@ var connection = require("./dbSetUp");
 var AddTo = require("./addTo_db");
 var addto = new AddTo();
 var deptList = [];
-
-
 connection.connect(function(err) {
     if (err) throw err;
 });
 connection.query("SELECT * FROM sections", function(err, response) {
     if (err) throw (err);
-
-
     for (var i = 0; i < response.length; i++) {
-
         deptList.push(response[i].department);
     }
-
 })
 console.log(deptList);
 var letsWork = function() {
@@ -46,7 +40,6 @@ var job = function() {
         switch (response.jobType) {
             case "Check stock levels":
                 addto.list();
-
                 job();
                 break;
             case "Order more of current stock":
@@ -64,7 +57,6 @@ var job = function() {
                 ]).then(function(response) {
                     addto.update(response.id, response.order);
                     letsWork();
-
                 })
                 break;
             case "Add new items to the store":
@@ -92,7 +84,6 @@ var job = function() {
                     addto.newItem(response.item, response.dept, response.quantity, response.price);
                     letsWork();
                 })
-
                 break;
             case "Remove an item from the store":
                 list();
