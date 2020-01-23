@@ -27,7 +27,19 @@ var shopper = function() {
                 }
             ]).then(function(response) {
                 var purchase = new Purchase(response.userchoice, response.quantity);
-                purchase.update;
+                purchase.total();
+                inquirer.prompt([{
+                    type: "confirm",
+                    message: "Do you wish to continue",
+                    name: "continue"
+                }]).then(function(response) {
+                    if (response.continue) {
+                        purchase.update();
+                    }
+                    if (!response.continue) {
+                        shopper();
+                    }
+                })
 
             })
 

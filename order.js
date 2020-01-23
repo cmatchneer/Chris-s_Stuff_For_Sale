@@ -5,9 +5,23 @@ var mysql = require("mysql");
 var connection = require("./dbSetUp");
 var AddTo = require("./addTo_db");
 var addto = new AddTo();
+var deptList = [];
+
+
 connection.connect(function(err) {
     if (err) throw err;
 });
+connection.query("SELECT * FROM sections", function(err, response) {
+    if (err) throw (err);
+
+
+    for (var i = 0; i < response.length; i++) {
+
+        deptList.push(response[i].department);
+    }
+
+})
+console.log(deptList);
 var letsWork = function() {
     inquirer.prompt([{
         type: "confirm",
@@ -26,7 +40,7 @@ var job = function() {
     inquirer.prompt([{
         type: "list",
         message: "What kind of work are we doing today",
-        choices: ["Check stock levels", "Order more of current stock", "Add new items to the store"],
+        choices: ["Check stock levels", "Order more of current stock", "Add new items to the store", "Remove an item from the store"],
         name: "jobType"
     }]).then(function(response) {
         switch (response.jobType) {
@@ -49,22 +63,47 @@ var job = function() {
                     }
                 ]).then(function(response) {
                     addto.update(response.id, response.order);
-                    inquirer.prompt([{
-                        type: "confirm",
-                        message: "Do you have more work to do?",
-                        name: "moreWork"
-                    }]).then(function(response) {
-                        if (response.moreWork) {
-                            job();
-                        }
-                        if (!response.moreWork) {
-                            console.log("Good work today see you later");
-                        }
-                    })
+                    letsWork();
 
                 })
                 break;
             case "Add new items to the store":
+                console.log("This better be a good item");
+                inquirer.prompt([{
+                        type: "input",
+                        message: "Enter the name of the item you wish to order",
+                        name: "item"
+                    },
+                    {
+                        type: "list",
+                        choices: deptList,
+                        name: "dept"
+                    },
+                    {
+                        type: "number",
+                        message: "How much of do you want",
+                        name: "quantity"
+                    }, {
+                        type: "number",
+                        message: "How much are we going to charge for this item",
+                        name: "price"
+                    }
+                ]).then(function(response) {
+                    addto.newItem(response.item, response.dept, response.quantity, response.price);
+                    letsWork();
+                })
+
+                break;
+            case "Remove an item from the store":
+                list();
+                inquirer.prompt([{
+                    type: "number",
+                    message: "Enter the id of the item you with to remove",
+                    name: "remove"
+                }]).then(function(response) {
+                    addto.remove(response.remove);
+                    letsWork();
+                })
                 break;
         }
     })

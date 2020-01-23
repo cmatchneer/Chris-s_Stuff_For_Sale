@@ -8,7 +8,7 @@ var list = function() {
         for (var i = 0; i < response.length; i++) {
 
 
-            console.log('\n\n', "Item id: " + response[i].id + "    Item Name: " + response[i].item + "     Quantity: " + response[i].quantity + "      Price: " + response[i].price, '\n\n');
+            console.log('\n', "Item id: " + response[i].id + "    Item Name: " + response[i].item + "     Quantity: " + response[i].quantity + "      Price: " + response[i].price, '\n');
 
         }
         // connection.end();

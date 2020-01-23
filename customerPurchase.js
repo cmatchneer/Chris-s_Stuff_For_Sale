@@ -3,27 +3,34 @@ var mysql = require("mysql");
 var connection = require("./dbSetUp");
 
 var Purchase = function(id, purchase) {
-        this.update = connection.query("UPDATE inventory SET ? WHERE ? OR ?", [{
-            quantity: purchase
-        }, {
-            id: id
-        }], function(err, response) {
-            if (err) throw err;
-            connection.query("SELECT * FROM inventory WHERE ?", {
+        this.update = function() {
+            connection.query("UPDATE inventory SET quantity=quantity-?,product_sales=product_sales +? WHERE id=?", [purchase, purchase, id], function(err, response) {
+                if (err) throw err;
+                connection.query("SELECT * FROM inventory WHERE ?", {
+                    id: id
+                }, function(err, response) {
+                    if (err) throw err;
+                    // console.log(response);
+                    console.log('\n', "Thanks for purchasing " + purchase + " of " + response[0].item, '\n',
+                        '\n', "We hope to see you again", '\n');
+
+                })
+
+            })
+        }
+        this.total = function() {
+            connection.query("SELECT inventory.price FROM inventory WHERE ?", {
                 id: id
             }, function(err, response) {
                 if (err) throw err;
-                console.log(response[0].item);
-                var total = parseFloat(response[0].price) * purchase
-                console.log("Thanks for purchasing " + purchase + " of " + response[0].item, '\n',
-                    "Your Total was " + total + " dollars", '\n', "We hope to see you again");
-                // connection.end();
-            })
 
-        })
+                var total = parseFloat(response[0].price) * purchase
+                console.log('\n', "Your total is " + total + " dollars", '\n')
+            })
+        }
 
 
     }
-    // var purchase = new Purchase(" ", 1, "Chairs");
-    // purchase.update;
+    // var purchase = new Purchase(1, 2);
+    // purchase.update();
 module.exports = Purchase;
